@@ -1,0 +1,82 @@
+#cut
+dvbcut
+gopchop
+
+#clip
+LiVES
+
+kdenlive
+kino
+
+#Source
+#su#
+apt-get install apt-src
+#user#
+mkdir code.dvbcut
+cd code.dvbcut
+apt-src install dvbcut
+#su#
+su
+apt-src install ffmpeg #install a lot
+##ffmpeg
+cd libav*
+./configure
+make #very long
+#cp -vrp ../libav* ../dvbcut*/ffmpeg.src
+#user#
+##dvbcut
+cd dvbcut*
+cp -vrp ../libav*/* ./ffmpeg.src/ #quite long
+###mkdir -p ffmpeg/lib/ ffmpeg/include/ffmpeg/
+cp -p ffmpeg.src/libavcodec/libavcodec.a ffmpeg.src/libavformat/libavformat.a ffmpeg.src/libavutil/libavutil.a ffmpeg/lib/
+cp -p ./ffmpeg.src/libavutil/mathematics.h ./ffmpeg.src/libavcodec/avcodec.h ./ffmpeg.src/libavformat/avformat.h ./ffmpeg.src/libavformat/avio.h ./ffmpeg.src/libavutil/avutil.h ./ffmpeg.src/libavutil/common.h ./ffmpeg.src/libavutil/intfloat_readwrite.h ./ffmpeg.src/libavutil/rational.h ffmpeg/include/ffmpeg/ #new as no integer.h
+autoconf
+./configure
+make -C src dvbcut #error for avframe.cpp
+
+###compile avframe.cpp
+cd src
+g++ -g -O2 -Wall -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DHAVE_LIB_MAD=1 -DHAVE_LIB_A52=1 -DHAVE_LIB_AO=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_AO_AO_H=1 -DHAVE_MAD_H=1 -DHAVE_STDINT_H=1 -DHAVE_A52DEC_A52_H=1 -DHAVE_STDLIB_H=1 -DHAVE_UNISTD_H=1 -DHAVE_SYS_PARAM_H=1 -DHAVE_GETPAGESIZE=1 -DHAVE_MMAP=1 -D__STDC_LIMIT_MACROS=1 -D__STDC_CONSTANT_MACROS=1 -D_FILE_OFFSET_BITS=64 -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I. -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I.  -c -o avframe.o avframe.cpp -DHAVE_LIB_SWSCALE
+cp -p ../ffmpeg.src/libswscale/libswscale.a ../ffmpeg/lib/
+cd ..
+###compile the rest
+make -C src dvbcut
+###link
+cd src
+g++ -o ../bin/dvbcut -L/home/debian/code.dvb/dvbcut-0.5.4+svn178/ffmpeg/lib  -L/lib avframe.o differenceimageprovider.o buffer.o dvbcut.o eventlistitem.o exception.o exportdialog.o imageprovider.o index.o lavfmuxer.o logoutput.o main.o mpegmuxer.o mpgfile.o mplayererrorbase.o playaudio.o progressstatusbar.o progresswindow.o psfile.o pts.o streamdata.o tsfile.o settings.o moc_dvbcut.o moc_exportdialog.o moc_mplayererrorbase.o moc_progressstatusbar.o moc_progresswindow.o qrc_icons.o -lavformat -lavcodec -lavutil  -lmad -la52 -lm -lao  -lQt3Support -lQtNetwork -lQtSql -lQtGui -lQtXml -lQtCore -lswscale -lbz2
+../bin/dvbcut
+cd ..
+
+###add for CImg
+nice -19 ionice -c 3 g++ -c cimg.cpp -I.. -Wall -W -ansi -pedantic -Dcimg_use_vt100 -I/usr/X11R6/include  -lm -L/usr/X11R6/lib -lpthread -lX11
+
+exit
+
+apt-src install dvbcut
+autoconf
+./configure && make FFMPEG=/usr
+lavfmuxer.h:76:20: error: ‘AV_PKT_FLAG_KEY’ was not declared in this scope
+
+
+exit
+
+apt-src install dvbcut
+autoconf
+./configure && make
+
+lavfmuxer.h:76:20: error: ‘AV_PKT_FLAG_KEY’ was not declared in this scope
+
+cd src
+g++ -g -O2 -Wall -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DHAVE_LIB_MAD=1 -DHAVE_LIB_A52=1 -DHAVE_LIB_AO=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_AO_AO_H=1 -DHAVE_MAD_H=1 -DHAVE_STDINT_H=1 -DHAVE_A52DEC_A52_H=1 -DHAVE_STDLIB_H=1 -DHAVE_UNISTD_H=1 -DHAVE_SYS_PARAM_H=1 -DHAVE_GETPAGESIZE=1 -DHAVE_MMAP=1 -D__STDC_LIMIT_MACROS=1 -D__STDC_CONSTANT_MACROS=1 -D_FILE_OFFSET_BITS=64 -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I. -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I.  -c -o dvbcut.o dvbcut.cpp -DAV_PKT_FLAG_KEY=0x0001
+cd ..
+make
+
+
+lavfmuxer.h:76:20: error: ‘AV_PKT_FLAG_KEY’ was not declared in this scope
+lavfmuxer.cpp: In constructor ‘lavfmuxer::lavfmuxer(const char*, uint32_t, mpgfile&, const char*)’:
+lavfmuxer.cpp:37:43: error: ‘av_guess_format’ was not declared in this scope
+lavfmuxer.cpp:42:31: error: ‘avformat_alloc_context’ was not declared in this scope
+lavfmuxer.cpp:76:28: error: ‘AVMEDIA_TYPE_AUDIO’ was not declared in this scope
+
+g++ -g -O2 -Wall -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DHAVE_LIB_MAD=1 -DHAVE_LIB_A52=1 -DHAVE_LIB_AO=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_AO_AO_H=1 -DHAVE_MAD_H=1 -DHAVE_STDINT_H=1 -DHAVE_A52DEC_A52_H=1 -DHAVE_STDLIB_H=1 -DHAVE_UNISTD_H=1 -DHAVE_SYS_PARAM_H=1 -DHAVE_GETPAGESIZE=1 -DHAVE_MMAP=1 -D__STDC_LIMIT_MACROS=1 -D__STDC_CONSTANT_MACROS=1 -D_FILE_OFFSET_BITS=64 -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I. -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include -I/home/user/code.dvbcut/dvbcut-0.5.4+svn178/ffmpeg/include/ffmpeg -I/include -DQT_SHARED -DQT3_SUPPORT -I/usr/include/qt4 -I/usr/include/qt4/Qt3Support -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtNetwork -I/usr/include/qt4/QtSql -I/usr/include/qt4/QtXml   -I.  -c -o lavfmuxer.o lavfmuxer.cpp -DAV_PKT_FLAG_KEY=0x0001
+still 3 last errors !

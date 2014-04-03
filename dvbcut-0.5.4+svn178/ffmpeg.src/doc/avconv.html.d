@@ -1,0 +1,11 @@
+doc/avconv.html: doc/avtools-common-opts.texi
+doc/avconv.html: doc/eval.texi
+doc/avconv.html: doc/encoders.texi
+doc/avconv.html: doc/demuxers.texi
+doc/avconv.html: doc/muxers.texi
+doc/avconv.html: doc/indevs.texi
+doc/avconv.html: doc/outdevs.texi
+doc/avconv.html: doc/protocols.texi
+doc/avconv.html: doc/bitstream_filters.texi
+doc/avconv.html: doc/filters.texi
+doc/avconv.html: doc/metadata.texi
